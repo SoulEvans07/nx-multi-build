@@ -1,0 +1,53 @@
+{
+  "name": "leaflet-be",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/leaflet-be/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/leaflet-be",
+        "main": "apps/leaflet-be/src/main.ts",
+        "tsConfig": "apps/leaflet-be/tsconfig.app.json",
+        "assets": ["apps/leaflet-be/src/assets"],
+        "webpackConfig": "apps/leaflet-be/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "leaflet-be:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "leaflet-be:build:development"
+        },
+        "production": {
+          "buildTarget": "leaflet-be:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/leaflet-be/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
