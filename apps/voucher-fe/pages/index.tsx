@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { utils } from '@nx-multi-build/utils';
 
 const StyledPage = styled.div`
   .page {
@@ -20,6 +21,7 @@ export function Index() {
               <span> Hello there, </span>
               Welcome voucher-fe 👋
             </h1>
+            <div className="util">{utils()}</div>
           </div>
 
           <div id="hero" className="rounded">
