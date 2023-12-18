@@ -1,0 +1,85 @@
+{
+  "name": "leaflet-fe",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/leaflet-fe/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/leaflet-fe",
+        "index": "apps/leaflet-fe/src/index.html",
+        "baseHref": "/",
+        "main": "apps/leaflet-fe/src/main.tsx",
+        "tsConfig": "apps/leaflet-fe/tsconfig.app.json",
+        "assets": [
+          "apps/leaflet-fe/src/favicon.ico",
+          "apps/leaflet-fe/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "apps/leaflet-fe/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/leaflet-fe/src/environments/environment.ts",
+              "with": "apps/leaflet-fe/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "leaflet-fe:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "leaflet-fe:build:development"
+        },
+        "production": {
+          "buildTarget": "leaflet-fe:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "leaflet-fe:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/leaflet-fe/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
