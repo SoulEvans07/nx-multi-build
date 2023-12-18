@@ -1,0 +1,26 @@
+{
+  "name": "voucher-fe-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/voucher-fe-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/voucher-fe-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "voucher-fe:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "voucher-fe:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["voucher-fe"]
+}
