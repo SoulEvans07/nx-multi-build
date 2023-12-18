@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@nx-multi-build/components": ["libs/components/src/index.ts"],
+      "@nx-multi-build/entities": ["libs/entities/src/index.ts"],
       "@nx-multi-build/utils": ["libs/utils/src/index.ts"]
     }
   },
