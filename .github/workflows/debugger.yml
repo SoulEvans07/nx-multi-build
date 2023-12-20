@@ -1,0 +1,38 @@
+name: Debugger
+
+on:
+  repository_dispatch:
+    types:
+      - "run debugger"
+jobs:
+  # ------------------------
+  affected_apps:
+    name: Gather Affected
+    runs-on: ubuntu-latest
+    outputs:
+      cz: ${{ steps.generate-matrix.outputs.cz }}
+      hu: ${{ steps.generate-matrix.outputs.hu }}
+      sk: ${{ steps.generate-matrix.outputs.sk }}
+      default: ${{ steps.generate-matrix.outputs.default }}
+      cz_array: ${{ steps.generate-matrix.outputs.cz_array }}
+      hu_array: ${{ steps.generate-matrix.outputs.hu_array }}
+      sk_array: ${{ steps.generate-matrix.outputs.sk_array }}
+      default_array: ${{ steps.generate-matrix.outputs.default_array }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Derive affected app names
+        id: derive-affected
+        shell: bash
+        run: |
+          echo "ls -a"
+          npx nx show projects
+          echo "AFFECTED=$(npx nx show projects --affected --exclude \*-e2e)" >> $GITHUB_ENV
+      - name: Generate Matrix
+        id: generate-matrix
+        shell: bash
+        run: |
+          echo "from env: $AFFECTED"
+          chmod +x ./scripts/byRegion.sh
+          ./scripts/byRegion.sh
