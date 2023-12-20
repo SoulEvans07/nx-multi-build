@@ -56,7 +56,7 @@ jobs:
         shell: bash
         run: |
           echo "$(npx nx show projects --affected --exclude \*-e2e)"
-      # echo "AFFECTED=$(npx nx show projects --affected --exclude \*-e2e)" >> $GITHUB_ENV
+          echo "AFFECTED=\"$(npx nx show projects --affected --exclude \*-e2e)\"" >> $GITHUB_ENV
       - name: Generate Matrix
         id: generate-matrix
         shell: bash
