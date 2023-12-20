@@ -1,9 +1,8 @@
 name: Build & Deploy
 
 on:
-  repository_dispatch:
-    types:
-      - "run ci"
+  workflow_dispatch:
+
 jobs:
   # ------------------------
   affected_apps:
