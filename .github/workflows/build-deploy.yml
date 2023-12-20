@@ -22,9 +22,8 @@ jobs:
       - name: Derive affected app names
         id: derive-affected
         shell: bash
-        # run: export AFFECTED="gift-voucher-fe leaflet-be leaflet-fe" && echo ::set-output name=derive-affected::$AFFECTED && echo $AFFECTED
         run: |
-          echo "AFFECTED=${{ github.event.client_payload.affected }}" >> $GITHUB_ENV
+          echo "AFFECTED=$(npx nx show projects --affected --exclude \*-e2e)" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
