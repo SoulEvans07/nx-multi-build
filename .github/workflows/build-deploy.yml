@@ -59,7 +59,7 @@ jobs:
           echo "$(npx nx show projects --affected --exclude \*-e2e)"
           AFFECTED_MULTI="$(npx nx show projects --affected --exclude \*-e2e)"
           AFFECTED_SINGLE=${AFFECTED_MULTI//$'\n'/ }
-          echo "AFFECTED=\"$AFFECTED_SINGLE\"" >> "$GITHUB_ENV"
+          echo "AFFECTED=$AFFECTED_SINGLE" >> "$GITHUB_ENV"
       - name: Generate Matrix
         id: generate-matrix
         shell: bash
