@@ -21,6 +21,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: Checkout
+      - name: git history
+        shell: bash
+        run: |
+          git log --graph
       - uses: actions/setup-node@v3
         name: Setup Node
         with:
