@@ -1,0 +1,73 @@
+name: Build
+
+on:
+  repository_dispatch:
+    types:
+      - "run debug"
+jobs:
+  # ------------------------
+  affected_apps:
+    runs-on: ubuntu-latest
+    outputs:
+      regional: ${{ steps.generate-matrix.outputs.regional }}
+      default: ${{ steps.generate-matrix.outputs.default }}
+    steps:
+      - name: Derive affected app names
+        id: derive-affected
+        shell: bash
+        # run: export AFFECTED="gift-voucher-fe leaflet-be leaflet-fe" && echo ::set-output name=derive-affected::$AFFECTED && echo $AFFECTED
+        run: |
+          echo "AFFECTED=${{ github.event.client_payload.affected }}" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Generate Matrix
+        id: generate-matrix
+        shell: bash
+        run: |
+          echo "from env: $AFFECTED"
+          chmod +x ./scripts/filter.sh
+          ./scripts/filter.sh
+  # ------------------------
+  my_echo:
+    runs-on: ubuntu-latest
+    needs:
+      - affected_apps
+    steps:
+      - name: Echo previous outputs
+        run: |
+          echo "${{ toJSON(needs.affected_apps.outputs) }}"
+          echo "${{ needs.affected_apps.outputs.default }}"
+          echo "${{ needs.affected_apps.outputs.regional }}"
+      - name: JSON tests
+        run: |
+          echo "${{ fromJSON(needs.affected_apps.outputs.default) }}"
+          echo "${{ fromJSON(needs.affected_apps.outputs.regional) }}"
+        # ------------------------
+  default_matrix:
+    runs-on: ubuntu-latest
+    needs:
+      - affected_apps
+      - my_echo
+    if: ${{ needs.affected_apps.outputs.default != '[]' }}
+    strategy:
+      matrix:
+        default: ${{ fromJSON(needs.affected_apps.outputs.default) }}
+    steps:
+      - name: Default Matrix => (${{ matrix.default }})
+        run: |
+          echo ${{ matrix.default }}
+  # ------------------------
+  regional_matrix:
+    runs-on: ubuntu-latest
+    needs:
+      - affected_apps
+      - my_echo
+    if: ${{ needs.affected_apps.outputs.regional != '[]' }}
+    strategy:
+      matrix:
+        regional: ${{ fromJSON(needs.affected_apps.outputs.regional) }}
+    steps:
+      - name: Regional Matrix => (${{ matrix.regional }})
+        run: |
+          echo ${{ matrix.regional }}
