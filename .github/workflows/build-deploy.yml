@@ -54,11 +54,12 @@ jobs:
       - name: Derive affected app names
         id: derive-affected
         shell: bash
-        # AFFECTED_MULTI="$(npx nx show projects --affected --exclude \*-e2e)"
-        # AFFECTED=${AFFECTED_MULTI//$'\n'/ }
+
         run: |
           echo "$(npx nx show projects --affected --exclude \*-e2e)"
-          echo "AFFECTED=\"${$(npx nx show projects --affected --exclude \*-e2e)//$'\n'/ }\"" >> "$GITHUB_ENV"
+          AFFECTED_MULTI="$(npx nx show projects --affected --exclude \*-e2e)"
+          AFFECTED_SINGLE=${AFFECTED_MULTI//$'\n'/ }
+          echo "AFFECTED=\"$AFFECTED_SINGLE\"" >> "$GITHUB_ENV"
       - name: Generate Matrix
         id: generate-matrix
         shell: bash
