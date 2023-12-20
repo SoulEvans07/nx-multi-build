@@ -21,6 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: Checkout
+        with:
+          fetch-depth: 0
       - name: git history
         shell: bash
         run: |
