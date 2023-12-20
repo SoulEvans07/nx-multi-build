@@ -50,6 +50,11 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
         run: pnpm install
+      - name: Debug
+        shell: bash
+        run: |
+          npx nx show projects
+          npx nx show projects --affected
       - name: Derive affected app names
         id: derive-affected
         shell: bash
