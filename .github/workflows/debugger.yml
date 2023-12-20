@@ -51,8 +51,6 @@ jobs:
         id: derive-affected
         shell: bash
         run: |
-          ls -a
-          npx nx show projects
           echo "AFFECTED=$(npx nx show projects --affected --exclude \*-e2e)" >> $GITHUB_ENV
       - name: Generate Matrix
         id: generate-matrix
